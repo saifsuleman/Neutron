@@ -1,0 +1,14 @@
+net/saifs/masonplugin/nms/NMSHandler.class
+net/saifs/masonplugin/command/subcommands/HelpCommand.class
+net/saifs/masonplugin/command/subcommands/EconomyCommands.class
+net/saifs/masonplugin/command/MasonCommand.class
+net/saifs/masonplugin/item/GunItem.class
+net/saifs/masonplugin/economy/Economy.class
+net/saifs/masonplugin/item/Item.class
+net/saifs/masonplugin/item/GunItem$1.class
+net/saifs/masonplugin/data/Config.class
+net/saifs/masonplugin/command/subcommands/RemoveCommand.class
+net/saifs/masonplugin/command/subcommands/SetCommand.class
+net/saifs/masonplugin/command/subcommands/GiveCommand.class
+net/saifs/masonplugin/MasonPlugin.class
+net/saifs/masonplugin/command/CommandHandler.class

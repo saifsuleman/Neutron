@@ -1,0 +1,9 @@
+name: MasonPlugin
+version: 1.0-SNAPSHOT
+main: net.saifs.masonplugin.MasonPlugin
+api-version: 1.13
+authors: [Saif]
+website: github.com/saifsuleman
+commands:
+  mason:
+    description: Mason Command

@@ -1,0 +1,8 @@
+mysql:
+  ip: "localhost"
+  port: 3306
+  database: mason
+  username: mason
+  password: mason
+economy:
+  startingBalance: 500
