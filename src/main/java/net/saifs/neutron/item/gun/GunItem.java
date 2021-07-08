@@ -33,6 +33,7 @@ public class GunItem extends Item implements Listener {
     protected int ammo;
     protected double delay;
     protected boolean explosive = false;
+    protected double range = 1.0;
 
     public GunItem(String id, ItemStack itemStack, Neutron plugin, Particle.DustOptions dustOptions, double speed, double damage, int ammo, double delay) {
         super(id, itemStack, plugin);
@@ -130,7 +131,7 @@ public class GunItem extends Item implements Listener {
 
                 renderBullet(bulletLocation);
 
-                Collection<Entity> targets = bulletLocation.getWorld().getNearbyEntities(bulletLocation, 1, 1, 1);
+                Collection<Entity> targets = bulletLocation.getWorld().getNearbyEntities(bulletLocation, range, range, range);
                 if (targets.size() > 0) {
                     for (Entity entity : targets) {
                         if (!(entity instanceof LivingEntity) || entity.equals(player)) continue;

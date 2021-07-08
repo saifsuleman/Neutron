@@ -12,6 +12,7 @@ import org.bukkit.util.Vector;
 public class ShotgunGun extends GunItem {
     public ShotgunGun(String id, ItemStack itemStack, Neutron plugin) {
         super(id, itemStack, plugin, new Particle.DustOptions(Color.WHITE, 4), 2, 20, 4, 10000);
+        this.range = 4;
     }
 
     @Override
@@ -26,7 +27,8 @@ public class ShotgunGun extends GunItem {
         super.renderBullet(location);
         World world = location.getWorld();
         if (world != null) {
-            world.spawnParticle(Particle.REDSTONE, location, 10, .5, .5, .5, dustOptions);
+            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.GRAY, 4);
+            world.spawnParticle(Particle.REDSTONE, location, 8, 1, 1, 1, dustOptions);
         }
     }
 }
