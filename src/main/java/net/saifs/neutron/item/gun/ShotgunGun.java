@@ -16,8 +16,8 @@ public class ShotgunGun extends GunItem {
     }
 
     @Override
-    protected void handlePlayerFire(Player player) {
-        super.handlePlayerFire(player);
+    protected void handlePlayerFire(Player player, Location firedAt) {
+        super.handlePlayerFire(player, firedAt);
         Vector vector = player.getLocation().getDirection().clone().normalize().multiply(-3);
         player.setVelocity(player.getVelocity().clone().add(vector));
     }
@@ -30,5 +30,14 @@ public class ShotgunGun extends GunItem {
             Particle.DustOptions dustOptions = new Particle.DustOptions(Color.GRAY, 4);
             world.spawnParticle(Particle.REDSTONE, location, 8, 1, 1, 1, dustOptions);
         }
+    }
+
+    /**
+     * Shotguns can't last more than five blocks without their
+     * bullets getting dissipated - short firing range. :)
+     */
+    @Override
+    protected boolean isBulletAlive(Location bulletStarted, Location bulletCurrent) {
+        return super.isBulletAlive(bulletStarted, bulletCurrent) && bulletCurrent.distance(bulletStarted) < 5;
     }
 }

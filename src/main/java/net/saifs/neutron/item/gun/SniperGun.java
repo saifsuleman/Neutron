@@ -16,7 +16,7 @@ public class SniperGun extends GunItem {
     }
 
     @Override
-    protected void handlePlayerFire(Player player) {
+    protected void handlePlayerFire(Player player, Location firedAt) {
         Location bulletLocation = player.getLocation().add(new Vector(0, 1, 0));
         Vector vector = player.getLocation().getDirection().normalize().multiply(this.speed);
 

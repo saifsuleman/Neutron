@@ -109,11 +109,11 @@ public class GunItem extends Item implements Listener {
                 return;
         }
 
-        handlePlayerFire(e.getPlayer());
+        handlePlayerFire(e.getPlayer(), e.getPlayer().getLocation().clone().add(new Vector(0, 1, 0)));
     }
 
-    protected void handlePlayerFire(Player player) {
-        Location bulletLocation = player.getLocation().add(new Vector(0, 1, 0));
+    protected void handlePlayerFire(Player player, Location firedAt) {
+        final Location bulletLocation = firedAt.clone();
         Vector vector = player.getLocation().getDirection().normalize().multiply(speed);
 
         BukkitRunnable runnable = new BukkitRunnable() {
@@ -143,7 +143,7 @@ public class GunItem extends Item implements Listener {
                     }
                 }
 
-                if (bulletLocation.getBlock().getType() != Material.AIR) {
+                if (!isBulletAlive(firedAt, bulletLocation)) {
                     if (explosive)
                         world.createExplosion(bulletLocation, 10.0f);
                     cancel();
@@ -151,6 +151,10 @@ public class GunItem extends Item implements Listener {
             }
         };
         runnable.runTaskTimer(getPlugin(), 0L, 0L);
+    }
+
+    protected boolean isBulletAlive(Location bulletStarted, Location bulletCurrent) {
+        return bulletCurrent.getBlock().getType() != Material.AIR;
     }
 
     public void setExplosive(boolean explosive) {
