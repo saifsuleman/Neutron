@@ -248,6 +248,7 @@ class SetCommand extends NeutronCommand {
 class BalanceCommand extends NeutronCommand {
     public BalanceCommand(CommandHandler commandHandler, String... aliases) {
         super(commandHandler, aliases);
+        registerCommandAlias("balance");
     }
 
     private void sendBalance(CommandSender sender, OfflinePlayer player, double balance) {

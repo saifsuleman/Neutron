@@ -7,3 +7,7 @@ website: github.com/saifsuleman
 commands:
   neutron:
     description: Neutron Command
+  balance:
+    aliases: bal
+  shop:
+    aliases: neutronshop

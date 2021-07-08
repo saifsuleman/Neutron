@@ -2,12 +2,14 @@ package net.saifs.neutron.command.subcommands;
 
 import net.saifs.neutron.command.CommandHandler;
 import net.saifs.neutron.command.NeutronCommand;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class ShopCommand extends NeutronCommand {
     public ShopCommand(CommandHandler commandHandler) {
         super(commandHandler, "shop");
+        registerCommandAlias("shop");
     }
 
     @Override
@@ -26,4 +28,5 @@ public class ShopCommand extends NeutronCommand {
     public String getDescription() {
         return "Opens the shop!";
     }
+
 }
