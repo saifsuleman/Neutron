@@ -74,7 +74,7 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
     private void rewardPlayer(UUID uuid) {
         Player player = Bukkit.getPlayer(uuid);
         if (player != null && player.isOnline()) {
-            player.sendMessage("You've played for five minutes and have received $50!");
+            player.sendMessage("§aYou've played for five minutes and have received $50!");
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getEconomy().giveMoney(player, 50));
         }
     }
