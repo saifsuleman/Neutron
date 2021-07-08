@@ -32,4 +32,18 @@ public class NMSHandler {
         itemStack.setTag(nbt);
         return CraftItemStack.asBukkitCopy(itemStack);
     }
+
+    public static long readLong(ItemStack i, String key) {
+        net.minecraft.server.v1_16_R3.ItemStack itemStack = CraftItemStack.asNMSCopy(i);
+        NBTTagCompound nbt = itemStack.getOrCreateTag();
+        return nbt.getLong(key);
+    }
+
+    public static ItemStack writeLong(ItemStack i, String key, long value) {
+        net.minecraft.server.v1_16_R3.ItemStack itemStack = CraftItemStack.asNMSCopy(i);
+        NBTTagCompound nbt = itemStack.getOrCreateTag();
+        nbt.setLong(key, value);
+        itemStack.setTag(nbt);
+        return CraftItemStack.asBukkitCopy(itemStack);
+    }
 }

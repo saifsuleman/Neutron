@@ -25,8 +25,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class GunItem extends Item implements Listener {
-    private final Map<UUID, Long> lastFiredMap = new HashMap<>();
-
     protected Particle.DustOptions dustOptions;
     protected double speed;
     protected double damage;
@@ -55,7 +53,10 @@ public class GunItem extends Item implements Listener {
 
     @Override
     public ItemStack getItemStack() {
-        return NMSHandler.writeInt(super.getItemStack(), "NEUTRON_GUN_AMMO", ammo);
+        ItemStack i = super.getItemStack();
+        i = NMSHandler.writeInt(i, "NEUTRON_GUN_AMMO", ammo);
+        i = NMSHandler.writeLong(i, "NEUTRON_LAST_FIRED", 0L);
+        return i;
     }
 
     private String getItemName(int ammo) {
@@ -77,26 +78,24 @@ public class GunItem extends Item implements Listener {
     public void onInteract(PlayerInteractEvent e) {
         if (e.getItem() == null || !isItem(e.getItem())) return;
 
-        int ammo = NMSHandler.readInt(e.getItem(), "NEUTRON_GUN_AMMO");
+        ItemStack itemStack = e.getItem();
+        int ammo = NMSHandler.readInt(itemStack, "NEUTRON_GUN_AMMO");
         if (ammo <= 0) {
             e.getPlayer().sendMessage("§cYou do not have any ammo left!");
             return;
         }
         ammo--;
+        itemStack = setAmmo(itemStack, ammo);
 
-        UUID uuid = e.getPlayer().getUniqueId();
         long now = System.currentTimeMillis();
-        if (lastFiredMap.containsKey(uuid)) {
-            long lastFired = lastFiredMap.get(uuid);
-            if (now < lastFired + delay) {
-                int wait = (int) Math.round(((lastFired + delay) - now) / 1000);
-                e.getPlayer().sendMessage("§cYou can't do that yet. Wait " + wait + " seconds.");
-                return;
-            }
+        long lastFired = NMSHandler.readLong(itemStack, "NEUTRON_LAST_FIRED");
+        if (now < lastFired + delay) {
+            int wait = (int) Math.round(((lastFired + delay) - now) / 1000);
+            e.getPlayer().sendMessage("§cYou can't do that yet. Wait " + wait + " seconds.");
+            return;
         }
-        lastFiredMap.put(uuid, now);
+        itemStack = NMSHandler.writeLong(itemStack, "NEUTRON_LAST_FIRED", System.currentTimeMillis());
 
-        ItemStack itemStack = setAmmo(e.getItem(), ammo);
         EquipmentSlot hand = e.getHand();
         if (hand == null) return;
         switch (hand) {
