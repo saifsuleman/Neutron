@@ -38,6 +38,7 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
             Connection connection = plugin.getHikari().getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,6 +66,7 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
                     }
                 };
                 runnable.runTaskLaterAsynchronously(plugin, delay);
+                connection.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -103,6 +105,7 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
             }
 
             statement.executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
