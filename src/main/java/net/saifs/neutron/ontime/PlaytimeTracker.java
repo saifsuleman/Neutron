@@ -30,6 +30,10 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         this.runTaskTimerAsynchronously(plugin, 1200, 1200);
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            loadPlayer(player);
+        }
     }
 
     private void createTables() {
@@ -47,7 +51,12 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
     // On player join, get their playtime from DB - pull it into cache asynchronously
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-        UUID uuid = e.getPlayer().getUniqueId();
+        Player player = e.getPlayer();
+        loadPlayer(player);
+    }
+
+    private void loadPlayer(Player player) {
+        UUID uuid = player.getUniqueId();
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
                 Connection connection = plugin.getHikari().getConnection();
@@ -56,7 +65,7 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
                 ResultSet results = statement.executeQuery();
 
                 long playTime = results.next() ? results.getLong("playtime") : 0;
-                this.joinTimes.put(e.getPlayer().getUniqueId(), System.currentTimeMillis() - playTime);
+                this.joinTimes.put(uuid, System.currentTimeMillis() - playTime);
                 long delay = 6000 - (playTime % 6000);
 
                 BukkitRunnable runnable = new BukkitRunnable() {
