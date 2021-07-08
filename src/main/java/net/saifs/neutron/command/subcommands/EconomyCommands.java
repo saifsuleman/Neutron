@@ -264,30 +264,31 @@ class BalanceCommand extends NeutronCommand {
     public void onCommand(CommandSender sender, String[] args) {
         String usage = "§cUsage: /" + getCommandHandler().getID() + " eco " + getUsage();
 
-        if (args.length == 0) {
+        if (args.length == 0 && !(sender instanceof Player)) {
             sender.sendMessage(usage);
             return;
         }
 
         Neutron plugin = getCommandHandler().getPlugin();
 
-        Player onlinePlayer = Bukkit.getPlayer(args[0]);
+
+        final Player player = args.length == 0 ? (Player) sender : Bukkit.getPlayer(args[0]);
         OfflinePlayer[] players = Bukkit.getOfflinePlayers();
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            OfflinePlayer player = onlinePlayer;
-            if (player == null) {
-                player = Arrays.stream(players).filter(p -> args[0].equalsIgnoreCase(p.getName())).findAny().orElse(null);
-                if (player == null) {
+            OfflinePlayer target = player;
+            if (target == null) {
+                target = Arrays.stream(players).filter(p -> args[0].equalsIgnoreCase(p.getName())).findAny().orElse(null);
+                if (target == null) {
                     Bukkit.getScheduler().runTask(plugin, () -> sender.sendMessage("§cError: Unable to find that player!"));
                     return;
                 }
             }
-            double balance = plugin.getEconomy().getPlayerBalance(player);
+            double balance = plugin.getEconomy().getPlayerBalance(target);
 
             // lambdas require final variables :)
-            final OfflinePlayer target = player;
-            Bukkit.getScheduler().runTask(plugin, () -> sendBalance(sender, target, balance));
+            final OfflinePlayer targetPlayer = target;
+            Bukkit.getScheduler().runTask(plugin, () -> sendBalance(sender, targetPlayer, balance));
         });
     }
 
