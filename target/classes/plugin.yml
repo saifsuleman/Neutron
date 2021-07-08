@@ -1,9 +1,9 @@
-name: MasonPlugin
+name: Neutron
 version: 1.0-SNAPSHOT
-main: net.saifs.masonplugin.MasonPlugin
+main: net.saifs.neutron.Neutron
 api-version: 1.13
 authors: [Saif]
 website: github.com/saifsuleman
 commands:
-  mason:
-    description: Mason Command
+  neutron:
+    description: Neutron Command

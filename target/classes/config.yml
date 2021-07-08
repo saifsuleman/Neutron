@@ -1,8 +1,8 @@
 mysql:
-  ip: "localhost"
+  ip: 127.0.0.1
   port: 3306
-  database: mason
-  username: mason
-  password: mason
+  database: neutron
+  username: neutron
+  password: neutron
 economy:
   startingBalance: 500
