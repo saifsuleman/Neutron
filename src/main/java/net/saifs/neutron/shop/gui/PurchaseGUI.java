@@ -54,7 +54,7 @@ public class PurchaseGUI implements Listener {
         Inventory inventory = Bukkit.createInventory(null, 27, "Purchase - " + this.shopItem.getProduct().getID());
 
         ItemStack cancel = NeutronHelper.constructItem(Material.RED_STAINED_GLASS_PANE, "§c§lCANCEL");
-        ItemStack confirm = NeutronHelper.constructItem(Material.GREEN_STAINED_GLASS_PANE, "§a§lCONFIRM");
+        ItemStack confirm = NeutronHelper.constructItem(Material.LIME_STAINED_GLASS_PANE, "§a§lCONFIRM");
         ItemStack filler = NeutronHelper.constructItem(Material.BLACK_STAINED_GLASS_PANE, " ");
 
         for (int i = 0; i < inventory.getSize(); i++) {
