@@ -54,7 +54,7 @@ public class ShopManager {
 
             scheduler.runTask(plugin, () -> {
                 if (canAfford) NeutronHelper.giveItem(player, shopItem.getProduct().getItemStack());
-                String response = canAfford ? "You have bought the thing" : "You have not bought the thing";
+                String response = canAfford ? "§aYou have successfully bought that item!" : "§cYou do not have the sufficient funds for that!";
                 player.sendMessage(response);
             });
         });
