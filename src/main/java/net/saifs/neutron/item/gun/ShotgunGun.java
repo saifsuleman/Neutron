@@ -37,7 +37,7 @@ public class ShotgunGun extends GunItem {
      * bullets getting dissipated - short firing range. :)
      */
     @Override
-    protected boolean isBulletAlive(Location bulletStarted, Location bulletCurrent) {
-        return super.isBulletAlive(bulletStarted, bulletCurrent) && bulletCurrent.distance(bulletStarted) < 5;
+    protected boolean isBulletDead(Location bulletStarted, Location bulletCurrent) {
+        return super.isBulletDead(bulletStarted, bulletCurrent) || bulletCurrent.distance(bulletStarted) > 5;
     }
 }

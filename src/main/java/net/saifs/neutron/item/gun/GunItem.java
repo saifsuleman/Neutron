@@ -143,7 +143,7 @@ public class GunItem extends Item implements Listener {
                     }
                 }
 
-                if (!isBulletAlive(firedAt, bulletLocation)) {
+                if (!isBulletDead(firedAt, bulletLocation)) {
                     if (explosive)
                         world.createExplosion(bulletLocation, 10.0f);
                     cancel();
@@ -153,7 +153,7 @@ public class GunItem extends Item implements Listener {
         runnable.runTaskTimer(getPlugin(), 0L, 0L);
     }
 
-    protected boolean isBulletAlive(Location bulletStarted, Location bulletCurrent) {
+    protected boolean isBulletDead(Location bulletStarted, Location bulletCurrent) {
         return bulletCurrent.getBlock().getType() != Material.AIR;
     }
 
