@@ -84,6 +84,8 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
     // Every minute, dump playtime cache into database
     @Override
     public void run() {
+        if (this.joinTimes.size() <= 0) return;
+
         try {
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO play_times (uuid, playtime) VALUES ");
             for (int i = 0; i < joinTimes.size(); i++) {
