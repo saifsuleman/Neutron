@@ -37,12 +37,10 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
     }
 
     private void createTables() {
-        try {
+        try (Connection connection = plugin.getHikari().getConnection()) {
             String query = "CREATE TABLE IF NOT EXISTS play_times (uuid VARCHAR(255) PRIMARY KEY, playtime BIGINT(8) NOT NULL)";
-            Connection connection = plugin.getHikari().getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
             statement.executeUpdate();
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,8 +56,7 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
     private void loadPlayer(Player player) {
         UUID uuid = player.getUniqueId();
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                Connection connection = plugin.getHikari().getConnection();
+            try (Connection connection = plugin.getHikari().getConnection()) {
                 PreparedStatement statement = connection.prepareStatement("SELECT playtime FROM play_times WHERE uuid = ?");
                 statement.setString(1, uuid.toString());
                 ResultSet results = statement.executeQuery();
@@ -75,7 +72,6 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
                     }
                 };
                 runnable.runTaskLaterAsynchronously(plugin, delay);
-                connection.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -95,7 +91,7 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
     public void run() {
         if (this.joinTimes.size() <= 0) return;
 
-        try {
+        try (Connection connection = plugin.getHikari().getConnection()) {
             StringBuilder queryBuilder = new StringBuilder("INSERT INTO play_times (uuid, playtime) VALUES ");
             for (int i = 0; i < joinTimes.size(); i++) {
                 queryBuilder.append("(?, ?)");
@@ -103,7 +99,6 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
             }
             queryBuilder.append(" ON DUPLICATE KEY UPDATE uuid=VALUES(uuid), playtime=VALUES(playtime)");
 
-            Connection connection = plugin.getHikari().getConnection();
             PreparedStatement statement = connection.prepareStatement(queryBuilder.toString());
 
             int counter = 1;
@@ -116,7 +111,6 @@ public class PlaytimeTracker extends BukkitRunnable implements Listener {
             }
 
             statement.executeUpdate();
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

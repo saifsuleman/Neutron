@@ -37,26 +37,22 @@ public class Economy implements Listener {
     }
 
     private void createTables() throws SQLException {
-        Connection connection = plugin.getHikari().getConnection();
-        String query = "CREATE TABLE IF NOT EXISTS coins (uuid VARCHAR(255) PRIMARY KEY, balance INT(10) NOT NULL)";
-        connection.prepareStatement(query).executeUpdate();
-        connection.close();
+        try (Connection connection = plugin.getHikari().getConnection()) {
+            String query = "CREATE TABLE IF NOT EXISTS coins (uuid VARCHAR(255) PRIMARY KEY, balance INT(10) NOT NULL)";
+            connection.prepareStatement(query).executeUpdate();
+        }
     }
 
     public double getPlayerBalance(OfflinePlayer player) {
         monitorActiveThread();
-        try {
-            Connection connection = plugin.getHikari().getConnection();
+        try (Connection connection = plugin.getHikari().getConnection()) {
             String query = "SELECT balance FROM coins WHERE uuid=?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, player.getUniqueId().toString());
             ResultSet results = statement.executeQuery();
             if (results.next()) {
-                double d = results.getDouble("balance");
-                connection.close();
-                return d;
+                return results.getDouble("balance");
             }
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,8 +62,7 @@ public class Economy implements Listener {
 
     public void setPlayerBalance(OfflinePlayer player, double balance) {
         monitorActiveThread();
-        try {
-            Connection connection = plugin.getHikari().getConnection();
+        try (Connection connection = plugin.getHikari().getConnection()) {
             boolean exists = this.playerEntryExists(player);
 
             String query = exists ? "UPDATE coins SET balance=? WHERE uuid=?" :
@@ -78,8 +73,6 @@ public class Economy implements Listener {
             statement.setString(2, player.getUniqueId().toString());
 
             statement.executeUpdate();
-
-            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,15 +92,12 @@ public class Economy implements Listener {
 
     private boolean playerEntryExists(OfflinePlayer player) {
         monitorActiveThread();
-        try {
-            Connection connection = plugin.getHikari().getConnection();
+        try (Connection connection = plugin.getHikari().getConnection()) {
             String query = "SELECT * FROM coins WHERE uuid=?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, player.getUniqueId().toString());
             ResultSet results = statement.executeQuery();
-            boolean exists = results.next();
-            connection.close();
-            return exists;
+            return results.next();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
