@@ -143,7 +143,7 @@ public class GunItem extends Item implements Listener {
                     }
                 }
 
-                if (!isBulletDead(firedAt, bulletLocation)) {
+                if (isBulletDead(firedAt, bulletLocation)) {
                     if (explosive)
                         world.createExplosion(bulletLocation, 10.0f);
                     cancel();
